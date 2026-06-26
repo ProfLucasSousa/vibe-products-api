@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 
 const express = require("express");
 
-const { formatProduct, findProductById, mockProducts } = require("./products");
+const { formatProduct, findProductById, mockProducts, searchProducts } = require("./products");
 
 type StockStatus = "available" | "unavailable";
 
@@ -28,6 +28,22 @@ app.get("/products", (_request: Request, response: Response) => {
 	const products = mockProducts.map(formatProduct);
 	response.json(products);
 });
+
+app.get("/products/search", (request: Request, response: Response) => {
+	const { category, stockStatus } = request.query;
+	
+	const categoryStr = typeof category === "string" ? category : undefined;
+	const stockStatusStr = typeof stockStatus === "string" ? stockStatus : undefined;
+
+	if (stockStatusStr && stockStatusStr !== "available" && stockStatusStr !== "unavailable") {
+		response.status(400).json({ message: "stockStatus inválido. Use 'available' ou 'unavailable'." });
+		return;
+	}
+
+	const foundProducts = searchProducts(categoryStr, stockStatusStr);
+	response.json(foundProducts.map(formatProduct));
+});
+
 
 app.get("/products/:id", (request: Request, response: Response) => {
 	const rawId = request.params.id;

@@ -1,0 +1,21 @@
+GET http://localhost:3000/products
+
+###
+
+GET http://localhost:3000/products/1
+
+###
+
+GET http://localhost:3000/products/999
+
+###
+
+GET http://localhost:3000/products/search?category=corpo
+
+###
+
+GET http://localhost:3000/products/search?stockStatus=available
+
+###
+
+GET http://localhost:3000/products/search?category=corpo&stockStatus=available

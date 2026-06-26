@@ -67,8 +67,22 @@ function findProductById(id: number): MockProduct | undefined {
 	return mockProducts.find((product) => product.id === id);
 }
 
+function searchProducts(category?: string, stockStatus?: string): MockProduct[] {
+	return mockProducts.filter((product) => {
+		let match = true;
+		if (category) {
+			match = match && product.category.toLowerCase() === category.toLowerCase();
+		}
+		if (stockStatus) {
+			match = match && product.stockStatus === stockStatus;
+		}
+		return match;
+	});
+}
+
 module.exports = {
 	mockProducts,
 	formatProduct,
 	findProductById,
+	searchProducts,
 };
